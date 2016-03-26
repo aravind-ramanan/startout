@@ -1,2 +1,0 @@
-# startout
-Project allocator
