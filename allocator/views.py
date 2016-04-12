@@ -165,9 +165,9 @@ def google_login(request):
 def searchproject(request):
     if request.method == 'GET':
         projectname = request.GET['projectname']
+        print projectname
         projects = Project.objects.filter(project_name = 'projectname')
-        print projects
-        context['p']= projects
+        context = {'projets' : projects}
         return render(request, 'allocator/searchproject.html', context)
     else:
         return HttpResponse("Invalid request")
