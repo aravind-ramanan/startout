@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register(r'snippets', views.SnippetView)
 
 urlpatterns = [
+    url(r'^$', views.index, name = 'index'),
     url(r'^', include(router.urls)),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
@@ -16,6 +17,6 @@ urlpatterns = [
     url(r'^google_login/$', views.google_login, name='google_login'),
     url(r'^google/$', views.googlePlus, name='googlePlus'),
     url(r'^admin/', include(admin.site.urls)),
-
-    
+    url(r'^searchproject/$', views.searchproject, name='searchproject'),
+    url(r'^createproject/$', views.createproject, name='createproject'),
 ]

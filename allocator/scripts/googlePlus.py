@@ -7,7 +7,7 @@ import string
 
 AUTHORISE_URL = 'https://accounts.google.com/o/oauth2/auth'
 ACCESS_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'
-REDIRECT_URL = 'https://localhost:8000/allocator/google/'
+REDIRECT_URL = 'https://localhost:8000/allocator/'
 PROFILE_API = 'https://www.googleapis.com/auth/plus.login'
 
 class GooglePlus:

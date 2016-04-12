@@ -56,7 +56,7 @@ def index(request):
                     new_user.save()
 
                     try:
-                        profle = GoogleProfile.objects.get(user = new_user.id)
+                        profile = GoogleProfile.objects.get(user = new_user.id)
                         profile.access_token = getGoogle.access_token
                     except:
                         profile = GoogleProfile()
@@ -68,12 +68,27 @@ def index(request):
                 user = authenticate(username=username+'_google', password='password')
                 login(request, user)
 
+    context = {'hello': 'world'}
+    return render(request, 'allocator/index.html', context)
+
+
 def api_examples(request):
+    if request.method == 'POST':
+        project_name = request.POST.get('projectname')
+        project_logo = request.POST.get('project_logo')
+        project_desc = request.POST.get('description')
+        project_cat = request.POST.get('category')
+        project_skill = request.POST.get('skills_reqd')
+        project_back = request.POST.get('edu_background_reqd')
+        project_payment = request.POST.get('payment')
+        print project_name
+
     context = {'title': 'API Examples Page'}
     return render(request, 'allocator/api_examples.html', context)
 
 def googlePlus(request):
 
+    print "test text"
     userInfo = getGoogle.get_user_info()
     return render(request, 'allocator/googlePlus.html', {'userInfo' : userInfo})
 
@@ -139,3 +154,16 @@ def google_login(request):
     profile_track = 'google'
     google_url = getGoogle.get_authorize_url()
     return HttpResponseRedirect(google_url)
+
+def searchproject(request):
+    if request.method == 'GET':
+        projectname = request.GET['projectname']
+        projects = Project.objects.filter(project_name = 'projectname')
+        print projects
+        context['p']= projects
+        return render(request, 'allocator/searchproject.html', context)
+    else:
+        return HttpResponse("Invalid request")
+
+def createproject(request):
+    return render(request, 'allocator/createproject.html', {})

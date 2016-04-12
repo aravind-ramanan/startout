@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html>
+    {% include 'allocator/base.html' %}
+
+    <body>
+	<div>
+		{% if user.is_authenticated %}
+			{% if projects %}
+			<h3>Search results</h3>
+			<ul>
+				{% for p in projects %}
+				<li>{{p.project_name}}</li>
+				{% endfor %}
+			</ul>	 
+			{% else %}
+			<h3>0 search results to display </h3>
+		{% else %}
+			<h2> Please register/login! </h2>
+	</div>
+
+    </body>
+</html>
