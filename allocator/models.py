@@ -9,7 +9,7 @@ from django.utils import timezone
 class Project(models.Model): 
 #model for your projects
     project_name=models.CharField(max_length=30)
-    project_id=models.IntegerField(primary_key=True)
+    project_id=models.AutoField(primary_key=True)
     project_logo=models.CharField(max_length=100)
     date_created=models.DateTimeField(default=timezone.now())
     description=models.CharField(max_length=50)

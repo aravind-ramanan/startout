@@ -81,14 +81,21 @@ def api_examples(request):
         project_skill = request.POST.get('skills_reqd')
         project_back = request.POST.get('edu_background_reqd')
         project_payment = request.POST.get('payment')
-        print project_name
-
-    context = {'title': 'API Examples Page'}
+        new_project = Project(project_name = project_name)
+        new_project.project_logo = project_logo
+        new_project.description = project_desc
+        new_project.category = project_cat
+        new_project.skills_reqd = project_skill
+        new_project.edu_background_reqd = project_back
+        new_project.payment = project_payment
+        new_project.date_created = timezone.now()
+        new_project.status = "working"
+        new_project.save()
+        context = {'title' : "The project has been created"}
+    context = {'title': 14}
     return render(request, 'allocator/api_examples.html', context)
 
 def googlePlus(request):
-
-    print "test text"
     userInfo = getGoogle.get_user_info()
     return render(request, 'allocator/googlePlus.html', {'userInfo' : userInfo})
 
