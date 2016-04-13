@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+    {% include 'allocator/base.html' %}
+
+    <body>
+	<div>
+		{% if user.is_authenticated %}
+               {% if h != 0 %}
+                <h3>Search results</h3>			
+				<table>			
+				<tr><td>PROJECT ID </td><td>: {{id}}</td></tr>
+				<tr><td>DESCRIPTION </td><td>: {{desc}}</td></tr>
+				<tr><td>DATE CREATED</td><td>: {{date}}</td></tr>
+				<tr><td>CATEGORY </td><td>: {{category}}</td></tr>
+				<tr><td>SKILLS REQUIRED</td><td>: {{skills}}</td></tr>
+				<tr><td>PAYMENT OFFERED</td><td>: {{payment}}</td></tr>
+				<tr><td>STATUS</td><td>: {{status}}</td></tr>
+                </table>
+               {% else %}
+                <h3>No results to display </h3>
+               {% endif %}
+		{% else %}
+			<h2> Please register/login! </h2>
+		{% endif %}
+	</div>
+
+    </body>
+</html>

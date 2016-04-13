@@ -1,0 +1,29 @@
+<html>
+{% include 'allocator/base.html' %}
+<body>
+
+	<div>
+	  <h3>Search Projects</h3>
+	  <form method = "GET" action = "/allocator/searchproject/">
+	  	{% csrf_token %}
+	    <input type="text" name="projectname" value = ""required><br>
+	    <input type="submit" value = "Search">
+	  </form>
+	</div>
+
+	<div>
+	  <a href="/allocator/createproject/"><h3>Create Project</h3></a>
+	</div>
+	<div>
+	  <a href="/allocator/editproject/"><h3>Edit Projects</h3></a>
+	</div>
+    <div>
+	  <a href="/allocator/viewall/"><h3>View and delete</h3></a>
+	</div>
+	<div class="row text-center">
+        <div class="col-sm-4"><a href="http://localhost:8000/allocator/google/" style="color: #fff"><div style="background-color: #d95234" class="panel panel-default"><div class="panel-body"><img src="http://upcity.com/blog/wp-content/uploads/2013/11/Google-Plus-Logo-650x318.png" height="50">Google User Info Example</div></div></a></div>
+  	</div>
+
+
+</body>
+</html>
