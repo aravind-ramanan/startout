@@ -174,3 +174,31 @@ def searchproject(request):
 
 def createproject(request):
     return render(request, 'allocator/createproject.html', {})
+    
+def editproject(request):
+    if request.method == 'POST':
+        project_name = request.POST.get('projectname')
+        project_logo = request.POST.get('project_logo')
+        project_desc = request.POST.get('description')
+        project_cat = request.POST.get('category')
+        project_skill = request.POST.get('skills_reqd')
+        project_back = request.POST.get('edu_background_reqd')
+        project_payment = request.POST.get('payment')
+        project_id = request.POST.get('project_id')
+        p = Project.objects.filter(project_id = project_id)
+        q=p[0]
+        q.project_name = project_name
+        q.project_logo = project_logo
+        q.project_desc = project_desc
+        q.project_cat = project_cat
+        q.project_skill = project_skill
+        q.project_back = project_back
+        q.project_payment = project_payment
+        q.save()
+    p = Project.objects.all()
+    context = {'project_list' : p }
+    return render(request, 'allocator/editproject.html', context)
+    
+def edit(request, project_id):
+    context = {'project_id' : project_id} 
+    return render(request, 'allocator/edit.html', context)
