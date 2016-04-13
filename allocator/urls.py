@@ -19,4 +19,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^searchproject/$', views.searchproject, name='searchproject'),
     url(r'^createproject/$', views.createproject, name='createproject'),
+    url(r'^editproject/$', views.editproject, name='editproject'),
+    url(r'^edit/(?P<project_id>[0-9]+)/$', views.edit, name='edit'),
 ]
