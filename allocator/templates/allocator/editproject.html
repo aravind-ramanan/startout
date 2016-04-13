@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+    {% include 'allocator/base.html' %}
+
+    <body>
+
+	<div>
+		{% if user.is_authenticated %}
+			<h3>Select Project to edit or delete</h3>
+			{% for project in project_list %}
+			<ul>
+			    <li><a href="/allocator/edit/{{project.project_id}}">{{project}}</a></li>
+			</ul>
+  			{% endfor %}
+		{% else %}
+			<h2> Please register/login! </h2>
+		{% endif %}
+	</div>
+
+    </body>
+</html>
