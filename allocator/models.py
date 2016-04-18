@@ -6,6 +6,7 @@ from django.utils import timezone
 
 
 # Create your models here.
+
 class Project(models.Model): 
 #model for your projects
     project_name=models.CharField(max_length=30)
@@ -18,6 +19,9 @@ class Project(models.Model):
     edu_background_reqd=models.CharField(max_length=100)
     payment=models.IntegerField(default=0)
     status=models.CharField(max_length=15)
+    project_owner = models.IntegerField(default = 0)
+    project_manager = models.IntegerField(default = 0)
+    project_participants = models.CharField(max_length = 100, default = '')
 
     def __str__(self):
         return self.project_name
@@ -53,3 +57,18 @@ class Snippet(models.Model):
 
     class Meta:
         ordering = ('created',)
+
+
+class UserDetails(models.Model):
+    user = models.ForeignKey(User)
+    date_of_birth = models.DateTimeField(default=timezone.now())
+    skills = models.CharField(max_length=100,  default = '')
+    edu_background = models.CharField(max_length=100, default = '')
+    interests = models.CharField(max_length=100, default = '')
+    votes = models.IntegerField(default=0)
+    profile_pic_loc = models.CharField(max_length=100, default = '')
+    participated_pid = models.CharField(default='',max_length=200)
+
+    def __str__(self):
+        return self.firstname    
+   

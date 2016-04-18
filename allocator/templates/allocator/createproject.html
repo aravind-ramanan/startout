@@ -7,17 +7,23 @@
 
 	<div>
 		{% if user.is_authenticated %}
-			<h3>Create Projects</h3>
+			<h3>Create Project</h3>
   			<form method = "POST" action = "/allocator/api/">
   				{% csrf_token %}
-	    		Project Name            <input type="text" name="projectname" value = ""required><br>
-	    		Project Logo            <input type="text" name="project_logo" value = ""required><br>
-	    		Description             <input type="text" name="description" value = ""required><br>
-	    		Category                <input type="text" name="category" value = ""required><br>
-	    		Skill Requirements      <input type="text" name="skills_reqd" value = ""required><br>
-	    		Educational Requirements<input type="text" name="edu_background_reqd" value = ""required><br>
-	    		Payment                 <input type="text" name="payment" value = ""required><br>
-	    		<input type="submit" value = "Create">
+  				<table>
+	    		<tr><td>Project Name</td><td><input type="text" name="projectname" value="" required></td></tr>
+	    		<tr><td>Project Logo</td><td><input type="text" name="project_logo" value=""required></td></tr>
+	    		<tr><td>Description</td><td><input type="text" name="description" value = ""required></td></tr>
+	    		<tr><td>Category</td><td><input type="text" name="category" value = ""required></td></tr>
+	    		<tr><td>Skill Requirements</td><td><input type="text" name="skills_reqd" value = ""required></td>
+	    		</tr>
+	    		<tr><td>Educational Requirements</td><td><input type="text" name="edu_background_reqd" value = ""required></td></tr>
+	    		<tr><td>Payment</td><td><input type="text" name="payment" value = ""required></td></tr>
+	    		<input type = 'hidden' name = 'userid' value = {{user.id}} >
+
+	    		<tr><td><input type="submit" value = "Create"></td></tr>
+
+	    		</table>
 	  		</form>
 		{% else %}
 			<h2> Please register/login! </h2>
