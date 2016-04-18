@@ -59,7 +59,7 @@ class Snippet(models.Model):
         ordering = ('created',)
 
 
-class UserDetails(models.Model):
+class UserDetail(models.Model):
     user = models.ForeignKey(User)
     date_of_birth = models.DateTimeField(default=timezone.now())
     skills = models.CharField(max_length=100,  default = '')
@@ -70,5 +70,5 @@ class UserDetails(models.Model):
     participated_pid = models.CharField(default='',max_length=200)
 
     def __str__(self):
-        return self.firstname    
+        return self.user.username   
    
