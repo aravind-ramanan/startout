@@ -165,7 +165,7 @@ def searchproject(request):
         projectname = request.GET['projectname']
         projects = Project.objects.filter(project_name = request.GET['projectname'])       
         print projects
-        h = 0
+        h,i,j,k,l,m,n,o = 0,0,0,0,0,0,0,0
         for p in projects:
             h = p.project_id
             i = p.project_name
