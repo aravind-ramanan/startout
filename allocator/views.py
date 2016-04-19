@@ -71,32 +71,16 @@ def index(request):
     context = {'hello': 'world'}
     return render(request, 'allocator/index.html', context)
 
+def googlePlus(request):
+    userInfo = getGoogle.get_user_info()
+    return render(request, 'allocator/googlePlus.html', {'userInfo' : userInfo})
+
 
 def api_examples(request):
-    if request.method == 'POST':
-        project_name = request.POST.get('projectname')
-        project_logo = request.POST.get('project_logo')
-        project_desc = request.POST.get('description')
-        project_cat = request.POST.get('category')
-        project_skill = request.POST.get('skills_reqd')
-        project_back = request.POST.get('edu_background_reqd')
-        project_payment = request.POST.get('payment')
-        userid = request.POST.get('userid')
-        new_project = Project(project_name = project_name)
-        new_project.project_logo = project_logo
-        new_project.description = project_desc
-        new_project.category = project_cat
-        new_project.skills_reqd = project_skill
-        new_project.edu_background_reqd = project_back
-        new_project.payment = project_payment
-        new_project.date_created = timezone.now()
-        new_project.status = "working"
-        new_project.project_owner = userid
-        new_project.save()
-        context = {'title' : "The project has been created"}
     context = {'title': 14}
     return render(request, 'allocator/api_examples.html', context)
 
+#views for deletion
 def viewall(request):
     print User.objects.all()
     projects = Project.objects.all()
@@ -112,10 +96,6 @@ def deleted(request):
         p.delete()
     context = {'i':pname}
     return render(request, 'allocator/deleted.html',context)
-
-def googlePlus(request):
-    userInfo = getGoogle.get_user_info()
-    return render(request, 'allocator/googlePlus.html', {'userInfo' : userInfo})
 
 def register(request):
     registered = False
@@ -200,9 +180,40 @@ def searchproject(request):
     else:
         return HttpResponse("Invalid request")
 
+#project creation views
 def createproject(request):
-    return render(request, 'allocator/createproject.html', {})
-    
+    member_list = User.objects.all()
+    context = {'members' : member_list }
+    return render(request, 'allocator/createproject.html', context)
+
+
+def created(request):
+    if request.method == 'POST':
+        project_name = request.POST.get('projectname')
+        project_logo = request.POST.get('project_logo')
+        project_desc = request.POST.get('description')
+        project_cat = request.POST.get('category')
+        project_skill = request.POST.get('skills_reqd')
+        project_back = request.POST.get('edu_background_reqd')
+        project_payment = request.POST.get('payment')
+        userid = request.POST.get('userid')
+        new_project = Project(project_name = project_name)
+        new_project.project_logo = project_logo
+        new_project.description = project_desc
+        new_project.category = project_cat
+        new_project.skills_reqd = project_skill
+        new_project.edu_background_reqd = project_back
+        new_project.payment = project_payment
+        new_project.date_created = timezone.now()
+        new_project.status = "working"
+        new_project.project_owner = userid
+        member_list = request.POST.getlist('member_list')
+        participants = ",".join(member_list)
+        new_project.project_participants = participants
+        new_project.save()
+    return render(request, 'allocator/created.html', {})
+
+#views to edit projects
 def editproject(request):
     if request.method == 'POST':
         project_name = request.POST.get('projectname')

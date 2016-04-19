@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^edit/(?P<project_id>[0-9]+)/$', views.edit, name='edit'),
     url(r'^viewall/$', views.viewall, name='viewall'),
     url(r'^deleted/$', views.deleted, name='deleted'),
+    url(r'^created/$', views.created, name='created'),
 ]

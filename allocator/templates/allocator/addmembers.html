@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+	{% include 'allocator/base.html' %}
+</head>
+<body>
+
+	<h3>Members registered</h3>
+	<form action = {% url 'created' %} method = 'POST'>
+		{% csrf_token %}
+		{% for member in members %}
+		<input type= "checkbox" name = "member_list" value = {{member.id}}> {{member}} <br>
+		{% endfor %}
+		<input type = "submit" value = "Add" >
+	</form>
+	</ul>
+</body>	
+</html>

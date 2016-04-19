@@ -8,7 +8,7 @@
 	<div>
 		{% if user.is_authenticated %}
 			<h3>Create Project</h3>
-  			<form method = "POST" action = "/allocator/api/">
+  			<form method = "POST" action = {% url 'created' %}>
   				{% csrf_token %}
   				<table>
 	    		<tr><td>Project Name</td><td><input type="text" name="projectname" value="" required></td></tr>
@@ -21,9 +21,13 @@
 	    		<tr><td>Payment</td><td><input type="text" name="payment" value = ""required></td></tr>
 	    		<input type = 'hidden' name = 'userid' value = {{user.id}} >
 
-	    		<tr><td><input type="submit" value = "Create"></td></tr>
-
 	    		</table>
+
+	    		<h3>Add members for your project</h3>
+	    		{% for member in members %}
+					<input type= "checkbox" name = "member_list" value = {{member.id}}> {{member}} <br>
+				{% endfor %}
+				<input type="submit" value = "Create">
 	  		</form>
 		{% else %}
 			<h2> Please register/login! </h2>
