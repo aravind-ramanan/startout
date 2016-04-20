@@ -177,11 +177,16 @@ def google_login(request):
 def searchproject(request):
     if request.method == 'GET':
         projectname = request.GET['projectname']
-        projects = Project.objects.filter(project_name = request.GET['projectname'])
+        projects = Project.objects.all()
+        pro = []
+        for p in projects:
+          if projectname in p.project_name:
+            pro.append(p)
+        #projects = Project.objects.filter(project_name = request.GET['projectname'])
         if len(projects) == 0:
             return HttpResponse("<html><p> No suggestions </p></html>")       
         else :            
-            pro = projects[0]            		
+            #pro = projects[0]            		
             context={'i': pro }
             return render(request, 'allocator/searchproject.html', context)
     else:
