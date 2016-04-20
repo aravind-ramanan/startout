@@ -31,7 +31,8 @@ from allocator.forms import UserForm
 
 app_name='allocator'
 
-profile_track = None
+#profile_track = None
+profile_track = 'google'
 
 getGoogle = GooglePlus(settings.GOOGLE_PLUS_APP_ID, settings.GOOGLE_PLUS_APP_SECRET)
 
@@ -41,10 +42,10 @@ def index(request):
 
     if not request.user.is_active:
         if request.GET.items():
-
             if profile_track == 'google':
                 code = request.GET['code']
                 state = request.GET['state']
+                print state
                 getGoogle.get_access_token(code, state)
                 userInfo = getGoogle.get_user_info()
                 username = userInfo['given_name'] + userInfo['family_name']
@@ -117,7 +118,7 @@ def register(request):
             u.skills= request.POST.get('skills')
             u.edu_background= request.POST.get('edu_background')
             u.interests=request.POST.get('interests')
-            u.profile_pic_loc= request.POST.get('pro_pic_location')
+            print request.POST.get('pro_pic_location')
             u.save()
             return HttpResponseRedirect('/allocator/login/')
         else:
