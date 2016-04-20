@@ -7,16 +7,20 @@
 	<div>
 		{% if user.is_authenticated %}
                {% if i %}
-                <h3>Search results</h3>			
-				<table>			
-				<tr><td>PROJECT ID </td><td>: {{i.project_id}}</td></tr>
-				<tr><td>DESCRIPTION </td><td>: {{i.description}}</td></tr>
-				<tr><td>DATE CREATED</td><td>: {{i.date_created}}</td></tr>
-				<tr><td>CATEGORY </td><td>: {{i.category}}</td></tr>
-				<tr><td>SKILLS REQUIRED</td><td>: {{i.skills_reqd}}</td></tr>
-				<tr><td>PAYMENT OFFERED</td><td>: {{i.payment}}</td></tr>
-				<tr><td>STATUS</td><td>: {{i.status}}</td></tr>
+                <h3>Search results</h3>
+                {% for p in i %}
+                 <h4>{{p.project_name}}</h4>				
+				<table>
+               		
+				<tr><td>PROJECT ID </td><td>: {{p.project_id}}</td></tr>
+				<tr><td>DESCRIPTION </td><td>: {{p.description}}</td></tr>
+				<tr><td>DATE CREATED</td><td>: {{p.date_created}}</td></tr>
+				<tr><td>CATEGORY </td><td>: {{p.category}}</td></tr>
+				<tr><td>SKILLS REQUIRED</td><td>: {{p.skills_reqd}}</td></tr>
+				<tr><td>PAYMENT OFFERED</td><td>: {{p.payment}}</td></tr>
+				<tr><td>STATUS</td><td>: {{p.status}}</td></tr>
                 </table>
+                {% endfor %}
                {% else %}
                 <h3>No results to display </h3>
                {% endif %}
