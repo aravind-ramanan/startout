@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+    {% include 'allocator/base.html' %}
+      {{user.id}}
+    <body>
+	<div>
+		{% if user.is_authenticated %}
+
+             <h4> Projects suggested for you <h4>
+                  {%for j in i%}
+                       <li>{{j.0.project_name}}</li> 
+                           <form method = "GET" action = "/allocator/searchproject/">
+                           {% csrf_token %}
+                          <input type = "hidden" name = "projectname" value = {{j.0.project_name}}>
+                          <input type="submit" value = "View details">
+                           </form>					     
+					     {% if j.1 %}
+                         <form method = "GET" action = "/allocator/sendreq/">
+                           {% csrf_token %}
+                         <input type="submit" value = "Send particiaption request">
+	  		             <input type="hidden" name = "uid" value = {{user.id}}>
+                         <input type="hidden" name = "pid" value = {{j.0.project_id}}>
+	                     </form>
+                        {% else %}
+                         <button> already requested </button>
+                        {% endif %}
+                                         
+				  {% endfor %}
+		{% else %}
+			<h2> Please register/login! </h2>
+		{% endif %}
+	</div>
+
+    </body>
+</html>

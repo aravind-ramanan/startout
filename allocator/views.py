@@ -222,6 +222,47 @@ def created(request):
         new_project.save()
     return render(request, 'allocator/created.html', {})
 
+def recommended(request):
+    if request.method == 'GET':
+        uid = int(request.GET['uid'])
+    users = UserDetail.objects.all()
+    usr = users[0]
+    for u in users:
+        if u.getid() == uid: 
+             usr = u      
+    a1 = usr.skills.split(",")
+    projects = Project.objects.all()
+    con = []
+    for p in projects:
+       a2 = p.skills_reqd.split(",")
+       l= list(set(a1).intersection(set(a2)))
+       a = p.requests.split(',')
+       a = [int(i) for i in a]
+       if len(l) != 0 : 
+             if uid in a:
+                con.append((p, 0))
+             else :       
+                con.append((p, 1))
+    context = { 'i': con }
+    return render(request, 'allocator/recommended.html',context)
+
+def sendreq(request):
+     if request.method == 'GET':
+        uid = int(request.GET['uid'])
+        pid = int(request.GET['pid'])
+        
+        projects = Project.objects.filter(project_id = pid)
+        pro = projects[0]
+        if pro.requests == "0":
+           pro.requests = str(uid)
+        else :
+           pro.requests = pro.requests + ',' + str(uid)
+        pro.save()
+        print pro.requests
+        context = { 'i' : pro }
+     return render(request, 'allocator/sendreq.html',context)
+
+
 #views to edit projects
 def editproject(request):
     if request.method == 'POST':
