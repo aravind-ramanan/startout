@@ -106,6 +106,19 @@ def register(request):
             user.set_password(user.password)
             user.save()
             registered = True
+            u = UserDetail()
+            p = User.objects.filter(username = user.username)
+            q=p[0]
+            q.first_name = request.POST.get('firstname')
+            q.last_name = request.POST.get('secondname')
+            q.save()
+            u.user= user
+            u.date_of_birth= request.POST.get('dateofbirth')
+            u.skills= request.POST.get('skills')
+            u.edu_background= request.POST.get('edu_background')
+            u.interests=request.POST.get('interests')
+            u.profile_pic_loc= request.POST.get('pro_pic_location')
+            u.save()
             return HttpResponseRedirect('/allocator/login/')
         else:
             print user_form.errors
@@ -165,7 +178,7 @@ def searchproject(request):
         projectname = request.GET['projectname']
         projects = Project.objects.filter(project_name = request.GET['projectname'])       
         print projects
-        h,i,j,k,l,m,n,o = 0,0,0,0,0,0,0,0
+        h = 0
         for p in projects:
             h = p.project_id
             i = p.project_name
