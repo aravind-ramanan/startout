@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^viewall/$', views.viewall, name='viewall'),
     url(r'^deleted/$', views.deleted, name='deleted'),
     url(r'^created/$', views.created, name='created'),
+    url(r'^recommended/$', views.recommended, name='recommended'),
+    url(r'^sendreq/$', views.sendreq, name='sendreq'),
 ]

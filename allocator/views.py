@@ -41,11 +41,11 @@ def index(request):
     print "index: " + str(request.user)
 
     if not request.user.is_active:
+        print "11111111"
         if request.GET.items():
             if profile_track == 'google':
                 code = request.GET['code']
                 state = request.GET['state']
-                print state
                 getGoogle.get_access_token(code, state)
                 userInfo = getGoogle.get_user_info()
                 username = userInfo['given_name'] + userInfo['family_name']
@@ -177,20 +177,13 @@ def google_login(request):
 def searchproject(request):
     if request.method == 'GET':
         projectname = request.GET['projectname']
-        projects = Project.objects.filter(project_name = request.GET['projectname'])       
-        print projects
-        h = 0
-        for p in projects:
-            h = p.project_id
-            i = p.project_name
-            j = p.date_created
-            k = p.description
-            l = p.category
-            m = p.skills_reqd
-            n = p.payment
-            o = p.status		
-        context={'id':h ,'name': i,'date': j,'desc': k,'category':l,'skills':m,'payment':n,'status':o}
-        return render(request, 'allocator/searchproject.html', context)
+        projects = Project.objects.filter(project_name = request.GET['projectname'])
+        if len(projects) == 0:
+            return HttpResponse("<html><p> No suggestions </p></html>")       
+        else :            
+            pro = projects[0]            		
+            context={'i': pro }
+            return render(request, 'allocator/searchproject.html', context)
     else:
         return HttpResponse("Invalid request")
 
@@ -222,10 +215,54 @@ def created(request):
         new_project.status = "working"
         new_project.project_owner = userid
         member_list = request.POST.getlist('member_list')
-        participants = ",".join(member_list)
-        new_project.project_participants = participants
+        for a in member_list:
+          if new_project.project_participants == "0":
+            new_project.project_participants = str(a)          
+          else :
+            new_project.project_participants = new_project.project_participants + ',' + str(a)
         new_project.save()
     return render(request, 'allocator/created.html', {})
+
+def recommended(request):
+    if request.method == 'GET':
+        uid = int(request.GET['uid'])
+    users = UserDetail.objects.all()
+    usr = users[0]
+    for u in users:
+        if u.getid() == uid: 
+             usr = u      
+    a1 = usr.skills.split(",")
+    projects = Project.objects.all()
+    con = []
+    for p in projects:
+       a2 = p.skills_reqd.split(",")
+       l= list(set(a1).intersection(set(a2)))
+       a = p.requests.split(',')
+       a = [int(i) for i in a]
+       if len(l) != 0 : 
+             if uid in a:
+                con.append((p, 0))
+             else :       
+                con.append((p, 1))
+    context = { 'i': con }
+    return render(request, 'allocator/recommended.html',context)
+
+def sendreq(request):
+     if request.method == 'GET':
+        uid = int(request.GET['uid'])
+        pid = int(request.GET['pid'])
+        
+        projects = Project.objects.filter(project_id = pid)
+        pro = projects[0]
+        if pro.requests == "0":
+           pro.requests = str(uid)
+        else :
+           pro.requests = pro.requests + ',' + str(uid)
+        pro.save()
+        print pro.requests
+        context = { 'i' : pro }
+     return render(request, 'allocator/sendreq.html',context)
+
 
 #views to edit projects
 def editproject(request):

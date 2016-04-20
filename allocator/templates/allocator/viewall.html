@@ -10,12 +10,15 @@
 			<h3>Search results</h3>
 			<ul>
 				{% for p in list %}
-				<li>{{p.project_name}}</li>
-                <form method = "POST" action = "/allocator/deleted/">
+                 {%if p.project_owner == user.id %}
+				    <li>{{p.project_name}}</li>
+                    {{p.requests}}
+                	<form method = "POST" action = "/allocator/deleted/">
                 	{% csrf_token %}
-                <input type="submit" value = "Delete">
-	  		    <input type="hidden" name = "del" value = {{p.project_name}}>
-	            </form>
+                	<input type="submit" value = "Delete Project">
+	  		    	<input type="hidden" name = "del" value = {{p.project_name}}>
+	            	</form>
+                  {% endif %}
 				{% endfor %}
 			</ul>	 
 			{% else %}

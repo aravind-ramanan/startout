@@ -6,16 +6,16 @@
     <body>
 	<div>
 		{% if user.is_authenticated %}
-               {% if h != 0 %}
+               {% if i %}
                 <h3>Search results</h3>			
 				<table>			
-				<tr><td>PROJECT ID </td><td>: {{id}}</td></tr>
-				<tr><td>DESCRIPTION </td><td>: {{desc}}</td></tr>
-				<tr><td>DATE CREATED</td><td>: {{date}}</td></tr>
-				<tr><td>CATEGORY </td><td>: {{category}}</td></tr>
-				<tr><td>SKILLS REQUIRED</td><td>: {{skills}}</td></tr>
-				<tr><td>PAYMENT OFFERED</td><td>: {{payment}}</td></tr>
-				<tr><td>STATUS</td><td>: {{status}}</td></tr>
+				<tr><td>PROJECT ID </td><td>: {{i.project_id}}</td></tr>
+				<tr><td>DESCRIPTION </td><td>: {{i.description}}</td></tr>
+				<tr><td>DATE CREATED</td><td>: {{i.date_created}}</td></tr>
+				<tr><td>CATEGORY </td><td>: {{i.category}}</td></tr>
+				<tr><td>SKILLS REQUIRED</td><td>: {{i.skills_reqd}}</td></tr>
+				<tr><td>PAYMENT OFFERED</td><td>: {{i.payment}}</td></tr>
+				<tr><td>STATUS</td><td>: {{i.status}}</td></tr>
                 </table>
                {% else %}
                 <h3>No results to display </h3>
