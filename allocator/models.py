@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.validators import *
+from django.core.exceptions import ValidationError
 
 
 # Create your models here.
@@ -21,7 +23,8 @@ class Project(models.Model):
     status=models.CharField(max_length=15)
     project_owner = models.IntegerField(default = 0)
     project_manager = models.IntegerField(default = 0)
-    project_participants = models.CharField(max_length = 100, default = '')
+    project_participants = models.CharField(max_length = 100, validators=[validate_comma_separated_integer_list], default = '0')
+    requests = models.CharField(max_length = 100, validators=[validate_comma_separated_integer_list], default = '0')
 
     def __str__(self):
         return self.project_name
@@ -70,5 +73,8 @@ class UserDetail(models.Model):
     participated_pid = models.CharField(default='',max_length=200)
 
     def __str__(self):
-        return self.user.username   
+        return self.user.username
+    
+    def getid(self):
+        return self.user.id   
    

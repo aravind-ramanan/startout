@@ -176,20 +176,13 @@ def google_login(request):
 def searchproject(request):
     if request.method == 'GET':
         projectname = request.GET['projectname']
-        projects = Project.objects.filter(project_name = request.GET['projectname'])       
-        print projects
-        h = 0
-        for p in projects:
-            h = p.project_id
-            i = p.project_name
-            j = p.date_created
-            k = p.description
-            l = p.category
-            m = p.skills_reqd
-            n = p.payment
-            o = p.status		
-        context={'id':h ,'name': i,'date': j,'desc': k,'category':l,'skills':m,'payment':n,'status':o}
-        return render(request, 'allocator/searchproject.html', context)
+        projects = Project.objects.filter(project_name = request.GET['projectname'])
+        if len(projects) == 0:
+            return HttpResponse("<html><p> No suggestions </p></html>")       
+        else :            
+            pro = projects[0]            		
+            context={'i': pro }
+            return render(request, 'allocator/searchproject.html', context)
     else:
         return HttpResponse("Invalid request")
 
@@ -221,8 +214,11 @@ def created(request):
         new_project.status = "working"
         new_project.project_owner = userid
         member_list = request.POST.getlist('member_list')
-        participants = ",".join(member_list)
-        new_project.project_participants = participants
+        for a in member_list:
+          if new_project.project_participants == "0":
+            new_project.project_participants = str(a)          
+          else :
+            new_project.project_participants = new_project.project_participants + ',' + str(a)
         new_project.save()
     return render(request, 'allocator/created.html', {})
 
