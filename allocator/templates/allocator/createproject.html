@@ -22,10 +22,6 @@
 	    		<input type = 'hidden' name = 'userid' value = {{user.id}} >
 
 	    		</table>
-	    		<h3>Nominate a manager</h3>
-	    		{% for member in members %}
-					<input type= "radio" name = "manager" value = {{member.id}}> {{member}} <br>
-				{% endfor %}
 
 	    		<h3>Add members for your project</h3>
 	    		{% for member in members %}

@@ -31,8 +31,7 @@ from allocator.forms import UserForm
 
 app_name='allocator'
 
-#profile_track = None
-profile_track = 'google'
+profile_track = None
 
 getGoogle = GooglePlus(settings.GOOGLE_PLUS_APP_ID, settings.GOOGLE_PLUS_APP_SECRET)
 
@@ -41,8 +40,8 @@ def index(request):
     print "index: " + str(request.user)
 
     if not request.user.is_active:
-        print "11111111"
         if request.GET.items():
+
             if profile_track == 'google':
                 code = request.GET['code']
                 state = request.GET['state']
@@ -175,7 +174,7 @@ def register(request):
             u.skills= request.POST.get('skills')
             u.edu_background= request.POST.get('edu_background')
             u.interests=request.POST.get('interests')
-            print request.POST.get('pro_pic_location')
+            u.profile_pic_loc= request.POST.get('pro_pic_location')
             u.save()
             return HttpResponseRedirect('/allocator/login/')
         else:
@@ -282,9 +281,6 @@ def created(request):
             new_project.project_participants = str(a)          
           else :
             new_project.project_participants = new_project.project_participants + ',' + str(a)
-        #manager nomination    
-        manager_id = request.POST.get('manager')
-        new_project.project_manager = manager_id
         new_project.save()
     return render(request, 'allocator/created.html', {})
 
@@ -372,7 +368,5 @@ def editproject(request):
     return render(request, 'allocator/editproject.html', context)
     
 def edit(request, project_id):
-    project = Project.objects.filter(project_id =project_id)
-    project_obj = project[0]
-    context = {'project_id' : project_id, 'project_obj': project_obj} 
+    context = {'project_id' : project_id} 
     return render(request, 'allocator/edit.html', context)
