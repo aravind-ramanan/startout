@@ -2,7 +2,7 @@
 
 <html>
     {% include 'allocator/base.html' %}
-      {{user.id}}
+     
     <body>
 	<div>
 		{% if user.is_authenticated %}
@@ -16,7 +16,7 @@
                           <input type="submit" value = "View details">
                            </form>					     
 					     {% if j.1 %}
-                         <form method = "GET" action = "/allocator/sendreq/">
+                         <form method = "GET" action = "/allocator/recommended/">
                            {% csrf_token %}
                          <input type="submit" value = "Send particiaption request">
 	  		             <input type="hidden" name = "uid" value = {{user.id}}>

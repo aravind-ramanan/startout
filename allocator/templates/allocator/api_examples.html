@@ -33,15 +33,22 @@ $(document).ready(function(){
 	  <a href="/allocator/editproject/"><h3>Edit Projects</h3></a>
 	</div>
          <div>
-	  <a href="/allocator/viewall/"><h3>View,delete and process requests</h3></a>
+       
+	  
+      <form method = "POST" action = "/allocator/viewall/">
+	  	{% csrf_token %}
+	    <input type="hidden" name="uid" value = {{user.id}}>
+       	<input type="submit" value = "view,delete and manage requests">
+	  </form>
+
 	</div>
    
     <div>
-	  <h3>View recommended projects</h3>
+	 
       <form method = "GET" action = "/allocator/recommended/">
 	  	{% csrf_token %}
 	    <input type="hidden" name="uid" value = {{user.id}}>
-       	<input type="submit" value = "view">
+       	<input type="submit" value = "view recommended projects">
 	  </form>
 	</div>
 	<div class="row text-center">

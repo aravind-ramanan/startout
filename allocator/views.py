@@ -82,10 +82,67 @@ def api_examples(request):
 
 #views for deletion
 def viewall(request):
-    print User.objects.all()
-    projects = Project.objects.all()
-    context={'list' : projects}   
+    try:
+      rad = request.POST.get('rad')
+    except:
+      rad = ""
+    if rad == "approve":
+      xuid = request.POST.get('xuid')
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      s = pro.project_participants
+      if s == "0":
+        s = xuid
+      else :
+        s = s + ',' + xuid
+      pro.project_participants = s
+      s = pro.requests
+      if s.count(',') == 0:
+        s = "0"
+      else :
+        s = [int(i) for i in s.split(',')]
+        s.remove(int(xuid))
+        s = ','.join([str(i) for i in s])
+      pro.requests  = s
+      pro.save()
+    elif rad == "decline":
+      xuid = request.POST.get('xuid')
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      s = pro.requests
+      if s.count(',') == 0:
+        s = "0"
+      else :
+        s = [int(i) for i in s.split(',')]
+        s.remove(int(xuid))
+        s = ','.join([str(i) for i in s])
+      pro.requests  = s
+      pro.save()
+      
+    uid = int(request.POST.get('uid'))    
+    projects = Project.objects.filter(project_owner = uid)
+    con = []    
+    for p in projects:
+      temp = []
+      a = p.requests.split(',')
+      a = [int(i) for i in a]
+      if a[0] == 0:
+        con.append((p,0))
+      else :
+        for idno in a:
+          users = User.objects.filter(id = idno)
+          u = users[0]
+          temp.append((idno, u.username))
+        con.append((p,temp))            
+    context={'list' : con}   
     return render(request, 'allocator/viewall.html', context)
+
+
+
+
+
 
 def deleted(request):
     pname = 0
@@ -228,6 +285,21 @@ def created(request):
     return render(request, 'allocator/created.html', {})
 
 def recommended(request):
+    try:
+      pid = request.GET['pid']
+    except:
+      pid = ""
+    if pid != "":
+        uid = int(request.GET['uid'])
+        pid = int(request.GET['pid'])
+        
+        projects = Project.objects.filter(project_id = pid)
+        pro = projects[0]
+        if pro.requests == "0":
+           pro.requests = str(uid)
+        else :
+           pro.requests = pro.requests + ',' + str(uid)
+        pro.save()
     if request.method == 'GET':
         uid = int(request.GET['uid'])
     users = UserDetail.objects.all()
@@ -239,6 +311,7 @@ def recommended(request):
     projects = Project.objects.all()
     con = []
     for p in projects:
+     if p.project_owner != uid :
        a2 = p.skills_reqd.split(",")
        l= list(set(a1).intersection(set(a2)))
        a = p.requests.split(',')
@@ -252,6 +325,7 @@ def recommended(request):
     return render(request, 'allocator/recommended.html',context)
 
 def sendreq(request):
+     
      if request.method == 'GET':
         uid = int(request.GET['uid'])
         pid = int(request.GET['pid'])

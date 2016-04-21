@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<!--view delete accept requests -->
 <html>
     {% include 'allocator/base.html' %}
 
@@ -10,15 +10,31 @@
 			<h3>Search results</h3>
 			<ul>
 				{% for p in list %}
-                 {%if p.project_owner == user.id %}
-				    <li>{{p.project_name}}</li>
-                    {{p.requests}}
+                 
+				    <li>{{p.0.project_name}}</li>
+                       
+                      {% if p.1 != 0%}
+                            {% for q in p.1 %}
+                                 {{q.1}}  sent you participation request 
+                                 <form method = "POST" action = "/allocator/viewall/">
+                	             {% csrf_token %}
+								<input type="radio" name = "rad" value = "approve">approve request</input>
+                                <input type="radio" name = "rad" value = "decline">decline request</input>
+								<input type="hidden" name = "xuid" value = {{q.0}}>
+                                <input type="hidden" name = "pid" value = {{p.0.project_id}}>
+                                <input type= "hidden" name = "uid" value= {{user.id}}>
+                                <input type="submit">
+								</form>                         
+                            {% endfor %}                    
+                       {% endif %}  
+                         
+                        
                 	<form method = "POST" action = "/allocator/deleted/">
                 	{% csrf_token %}
                 	<input type="submit" value = "Delete Project">
 	  		    	<input type="hidden" name = "del" value = {{p.project_name}}>
 	            	</form>
-                  {% endif %}
+                  
 				{% endfor %}
 			</ul>	 
 			{% else %}
