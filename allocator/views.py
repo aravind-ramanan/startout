@@ -225,6 +225,9 @@ def created(request):
             new_project.project_participants = str(a)          
           else :
             new_project.project_participants = new_project.project_participants + ',' + str(a)
+        #manager nomination    
+        manager_id = request.POST.get('manager')
+        new_project.project_manager = manager_id
         new_project.save()
     return render(request, 'allocator/created.html', {})
 
@@ -295,5 +298,7 @@ def editproject(request):
     return render(request, 'allocator/editproject.html', context)
     
 def edit(request, project_id):
-    context = {'project_id' : project_id} 
+    project = Project.objects.filter(project_id =project_id)
+    project_obj = project[0]
+    context = {'project_id' : project_id, 'project_obj': project_obj} 
     return render(request, 'allocator/edit.html', context)
