@@ -38,7 +38,7 @@ $(document).ready(function(){
       <form method = "POST" action = "/allocator/viewall/">
 	  	{% csrf_token %}
 	    <input type="hidden" name="uid" value = {{user.id}}>
-       	<input type="submit" value = "view,delete and manage requests">
+       	<input type="submit" value = "Manage Projects">
 	  </form>
 
 	</div>
@@ -48,7 +48,7 @@ $(document).ready(function(){
       <form method = "GET" action = "/allocator/recommended/">
 	  	{% csrf_token %}
 	    <input type="hidden" name="uid" value = {{user.id}}>
-       	<input type="submit" value = "view recommended projects">
+       	<input type="submit" value = "View Recommended Projects">
 	  </form>
 	</div>
 	<div class="row text-center">

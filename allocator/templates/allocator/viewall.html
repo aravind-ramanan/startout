@@ -27,12 +27,26 @@
 								</form>                         
                             {% endfor %}                    
                        {% endif %}  
-                         
+		               <form method="POST" action="/allocator/viewall/">
+                       {% csrf_token %}
+					  <select name="status">
+                        {% if p.0.status == "working" %}
+						<option value="working">working</option>
+						<option value="not working">not working</option>
+                        {% else %}
+                        <option value="not working">not working</option>
+						<option value="working">working</option>
+                        {% endif %}
+					  </select>
+                      <input type="hidden" name = "pid" value = {{p.0.project_id}}>
+                      <input type= "hidden" name = "uid" value= {{user.id}}>
+					  <input type="submit" value="Change Status"/>
+					</form>   
                         
                 	<form method = "POST" action = "/allocator/deleted/">
                 	{% csrf_token %}
                 	<input type="submit" value = "Delete Project">
-	  		    	<input type="hidden" name = "del" value = {{p.project_name}}>
+	  		    	<input type="hidden" name = "del" value = {{p.0.project_name}}>
 	            	</form>
                   
 				{% endfor %}

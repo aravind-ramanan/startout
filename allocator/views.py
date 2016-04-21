@@ -80,8 +80,24 @@ def api_examples(request):
     context = {'title': 14}
     return render(request, 'allocator/api_examples.html', context)
 
-#views for deletion
+#views for manager
 def viewall(request):
+    try:
+      status = request.POST.get('status')
+    except:
+      status = ""
+    if status == "working":
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      pro.status = "working"
+      pro.save()
+    if status == "not working":
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      pro.status = "not working"
+      pro.save()
     try:
       rad = request.POST.get('rad')
     except:
@@ -121,8 +137,8 @@ def viewall(request):
       pro.requests  = s
       pro.save()
       
-    uid = int(request.POST.get('uid'))    
-    projects = Project.objects.filter(project_owner = uid)
+    uid = int(request.POST.get('uid')) 
+    projects = Project.objects.filter(project_manager = uid)
     con = []    
     for p in projects:
       temp = []
@@ -281,6 +297,9 @@ def created(request):
             new_project.project_participants = str(a)          
           else :
             new_project.project_participants = new_project.project_participants + ',' + str(a)
+        #manager nomination    
+        manager_id = request.POST.get('manager')
+        new_project.project_manager = manager_id
         new_project.save()
     return render(request, 'allocator/created.html', {})
 
