@@ -24,9 +24,6 @@ urlpatterns = [
     url(r'^deleted/$', views.deleted, name='deleted'),
     url(r'^created/$', views.created, name='created'),
     url(r'^recommended/$', views.recommended, name='recommended'),
-<<<<<<< HEAD
     url(r'^sendreq/$', views.sendreq, name='sendreq'),
     url(r'^adduserdetail/$', views.adduserdetail, name='adduserdetail'),
-=======
->>>>>>> d3a64d44d9ccbd9af880dd4c68ab65bfae747b2d
 ]
