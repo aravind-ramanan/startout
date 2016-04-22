@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    {% include 'allocator/base.html' %}
+</head>
+
+
+<body>
+
+    <h3>Provide us some more details about you</h3>
+    <form action = {% url 'index' %} method='POST'>
+        {% csrf_token %}
+        <table>
+              <tr>
+                <td>Date of birth </td><td><input type="date" name = "dateofbirth"> </td>
+              </tr>
+              
+              <tr>
+                <td>Skills </td><td><input type = "text" name = "skills"></td>
+              </tr> 
+
+              <tr>
+                <td>Educational Background </td><td> <input type = "text" name = "edu_background"></td>
+              </tr>
+
+              <tr>
+                <td>Interests </td><td> <input type = "text" name = "interests"></td>
+              </tr>
+              {{user}}
+              <input type = "hidden" name="userid" value = {{user.id}}>
+              
+        </table>
+        <input type = "submit" name="Submit" value = "Submit" >
+    </form>
+
+</body>
+</html>
