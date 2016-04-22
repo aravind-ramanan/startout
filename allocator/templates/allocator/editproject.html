@@ -11,6 +11,14 @@
 			{% for project in project_list %}
 			<ul>
 			    <li><a href="/allocator/edit/{{project.project_id}}">{{project}}</a></li>
+                 
+                	<form method = "POST" action = "/allocator/editproject/">
+                	{% csrf_token %}
+                	<input type="submit" value = "Delete Project">
+	  		    	<input type="hidden" name = "uid" value = {{user.id}}>
+                    <input type="hidden" name = "rid" value = {{project.project_id}}>
+                     <input type="hidden" name="project_id" value = "#">
+	            	</form>
 			</ul>
   			{% endfor %}
 		{% else %}

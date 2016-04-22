@@ -438,6 +438,14 @@ def sendreq(request):
 #views to edit projects
 def editproject(request):
   if request.method == 'POST':
+    try:
+      rid = int(request.POST.get('rid'))
+    except:
+      rid = ""
+    if rid != "":
+      pros = Project.objects.filter(project_id = rid)
+      pro = pros[0]
+      pro.delete()
    
     pid = request.POST.get('project_id')
     print pid

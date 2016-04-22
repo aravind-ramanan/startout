@@ -53,11 +53,6 @@
                      <input type= "hidden" name = "leave" value= "clicked" >
 	            	</form>
 
-                	<form method = "POST" action = "/allocator/deleted/">
-                	{% csrf_token %}
-                	<input type="submit" value = "Delete Project">
-	  		    	<input type="hidden" name = "del" value = {{p.0.project_name}}>
-	            	</form>
                   
 				{% endfor %}
 			</ul>	 
