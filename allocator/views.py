@@ -40,20 +40,39 @@ getGoogle = GooglePlus(settings.GOOGLE_PLUS_APP_ID, settings.GOOGLE_PLUS_APP_SEC
 def index(request):
     print "index: " + str(request.user)
 
+    if request.method == 'POST' :
+        dateofbirth=request.POST.get('dateofbirth')
+        skills = request.POST.get('skills')
+        edu_background = request.POST.get('edu_background')
+        interests = request.POST.get('interests')
+        userid = request.POST.get('userid')
+        u=User.objects.filter(id= userid)
+        new_user = UserDetail()
+        new_user.user = u[0]
+        new_user.date_of_birth = dateofbirth
+        new_user.skills = skills
+        new_user.edu_background = edu_background
+        new_user.interests = interests
+        userInfo = getGoogle.get_user_info()
+        new_user.profile_pic_loc = userInfo['picture']
+        new_user.save()
+    
     if not request.user.is_active:
-        print "11111111"
         if request.GET.items():
             if profile_track == 'google':
                 code = request.GET['code']
                 state = request.GET['state']
                 getGoogle.get_access_token(code, state)
                 userInfo = getGoogle.get_user_info()
-                username = userInfo['given_name'] + userInfo['family_name']
+                username = userInfo['given_name']
 
                 try:
-                    user = User.objects.get(username=username+'_google')
+                    user = User.objects.get(username=username)
                 except User.DoesNotExist:
-                    new_user = User.objects.create_user(username+'_google', username+'@madewithgoogleplus', 'password')
+                    email = username+'@nitc.ac.in'
+                    new_user = User.objects.create_user(username, email.lower(), 'password')
+                    new_user.first_name = userInfo['given_name']
+                    new_user.last_name = userInfo['family_name']
                     new_user.save()
 
                     try:
@@ -66,11 +85,20 @@ def index(request):
                         profile.access_token = getGoogle.access_token
                         profile.profile_url = userInfo['link']
                     profile.save()
-                user = authenticate(username=username+'_google', password='password')
+                    print "something"        
+                    user = authenticate(username=username, password='password')
+                    login(request, user)
+                    return HttpResponseRedirect('/allocator/adduserdetail/')
+                user = authenticate(username=username, password='password')
                 login(request, user)
 
     context = {'hello': 'world'}
     return render(request, 'allocator/index.html', context)
+
+#view to add user detail
+def adduserdetail(request):
+    return render(request, 'allocator/adduserdetail.html',{})
+
 
 def googlePlus(request):
     userInfo = getGoogle.get_user_info()
@@ -118,7 +146,8 @@ def register(request):
             u.skills= request.POST.get('skills')
             u.edu_background= request.POST.get('edu_background')
             u.interests=request.POST.get('interests')
-            print request.POST.get('pro_pic_location')
+            pro_pic = request.POST.get('pro_pic_location')
+            print pro_pic
             u.save()
             return HttpResponseRedirect('/allocator/login/')
         else:
@@ -287,11 +316,11 @@ def editproject(request):
         q=p[0]
         q.project_name = project_name
         q.project_logo = project_logo
-        q.project_desc = project_desc
-        q.project_cat = project_cat
-        q.project_skill = project_skill
-        q.project_back = project_back
-        q.project_payment = project_payment
+        q.description = project_desc
+        q.category = project_cat
+        q.skills_reqd = project_skill
+        q.edu_background_reqd = project_back
+        q.payment = project_payment
         q.save()
     p = Project.objects.all()
     context = {'project_list' : p }
@@ -300,5 +329,6 @@ def editproject(request):
 def edit(request, project_id):
     project = Project.objects.filter(project_id =project_id)
     project_obj = project[0]
+    print project_obj.description
     context = {'project_id' : project_id, 'project_obj': project_obj} 
     return render(request, 'allocator/edit.html', context)

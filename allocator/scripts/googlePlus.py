@@ -7,7 +7,7 @@ import string
 
 AUTHORISE_URL = 'https://accounts.google.com/o/oauth2/auth'
 ACCESS_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'
-REDIRECT_URL = 'http://localhost:8000/allocator/'
+REDIRECT_URL = 'http://localhost:8000/'
 PROFILE_API = 'https://www.googleapis.com/auth/plus.login'
 
 class GooglePlus:
@@ -76,13 +76,13 @@ class GooglePlus:
 
 		#Checking that the sessino ID from the response match the session ID we sent
 		if state != self.session_id:
-			raise(Exception('Danger! Someone is messing up with you connection!'))
+			raise(Exception('Danger! Someone is messing up with your connection!'))
 
 		authSettings = {'client_secret': self.client_secret,
 		                'code':code,
 		                'grant_type':'authorization_code', 
 		                'client_id': self.client_id,
-		                'redirect_uri': 'http://localhost:8000/hackathon/'}
+		                'redirect_uri': 'http://localhost:8000/'}
 
 		response = requests.post(ACCESS_TOKEN_URL, data=authSettings)
 		if response.status_code != 200:

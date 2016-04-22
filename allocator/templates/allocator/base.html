@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title> Project allocator </title>
+    <title> Start-Out </title>
     <script src="/static/bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/bower_components/d3/d3.min.js"></script>
@@ -14,48 +14,34 @@
   </head>
     
   <body>
-    <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button><br><br> -->
-          <h2><a class="navbar-brand" href="/">Project Allocator</a></h2>
+
+          <h2><a class="navbar-brand" href="/">Start-Out</a></h2>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-left">
+        <div class="nav navbar-nav navbar-left">
           {% if user.is_authenticated %}
-          <li><a href="/allocator/api">API</a></li>
+          <a href="/allocator/api">API</a>
+          <div>{{user}}</div>
+          <div><a href="/allocator/logout/">Logout</a></div>
           {% endif %}
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
+        </div
+        <div class="nav navbar-nav navbar-right">
           {% if not user.is_authenticated %}
             <li class="active"><a href="/allocator/register">Register <span class="sr-only">(current)</span></a></li>
             
             <li><a href="/allocator/login">Login</a></li>
           {% endif %}
             
-        </ul>
-        
-        <ul  class="nav navbar-nav navbar-right">
-          {% if user.is_authenticated %}
-    
-            <li><a>Hello {{user}}</a></li>
-            <li><a href="/allocator/logout/">Logout</a></li>
-          {% endif %}
-        </ul>
-          
+        </div>        
           
           </li>
          </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
-    </nav>
   </body>
 </html>

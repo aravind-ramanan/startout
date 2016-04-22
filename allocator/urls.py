@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^created/$', views.created, name='created'),
     url(r'^recommended/$', views.recommended, name='recommended'),
     url(r'^sendreq/$', views.sendreq, name='sendreq'),
+    url(r'^adduserdetail/$', views.adduserdetail, name='adduserdetail'),
 ]
