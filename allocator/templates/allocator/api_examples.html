@@ -30,7 +30,13 @@ $(document).ready(function(){
 	  <a href="/allocator/createproject/"><h3>Create Project</h3></a>
 	</div>
 	<div>
-	  <a href="/allocator/editproject/"><h3>Edit Projects</h3></a>
+		  <form method = "POST" action = "/allocator/editproject/">
+		  	{% csrf_token %}
+		    <input type="hidden" name="uid" value = {{user.id}}>
+		    <input type="hidden" name="project_id" value = "#">
+	       	<input type="submit" value = "Edit Projects">
+		  </form>
+
 	</div>
          <div>
        

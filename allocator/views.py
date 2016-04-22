@@ -437,7 +437,15 @@ def sendreq(request):
 
 #views to edit projects
 def editproject(request):
-    if request.method == 'POST':
+  if request.method == 'POST':
+   
+    pid = request.POST.get('project_id')
+    print pid
+   
+    if pid == "#":         
+        uid = int(request.POST.get('uid'))
+        p = Project.objects.filter(project_owner = uid)
+    else :
         project_name = request.POST.get('projectname')
         project_logo = request.POST.get('project_logo')
         project_desc = request.POST.get('description')
@@ -445,7 +453,8 @@ def editproject(request):
         project_skill = request.POST.get('skills_reqd')
         project_back = request.POST.get('edu_background_reqd')
         project_payment = request.POST.get('payment')
-        project_id = request.POST.get('project_id')
+        project_id = int(request.POST.get('project_id'))
+        uid = int(request.POST.get('uid'))
         p = Project.objects.filter(project_id = project_id)
         q=p[0]
         q.project_name = project_name
@@ -456,7 +465,9 @@ def editproject(request):
         q.edu_background_reqd = project_back
         q.payment = project_payment
         q.save()
-    p = Project.objects.all()
+
+        p = Project.objects.filter(project_owner = uid)
+    
     context = {'project_list' : p }
     return render(request, 'allocator/editproject.html', context)
     
