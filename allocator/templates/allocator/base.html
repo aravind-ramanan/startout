@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title> Start-Out </title>
+    <title> StartOut! </title>
     <script src="/static/bower_components/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/bower_components/d3/d3.min.js"></script>
@@ -10,34 +10,50 @@
     <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/static/bower_components/bootstrap-social/bootstrap-social.css">
     <link rel="stylesheet" href="/static/bower_components/font-awesome/css/font-awesome.min.css">
+<link rel="icon" href="http://s31.postimg.org/xiquz967v/logo6.jpg" type="image/x-icon">
 
   </head>
+  
+  <style>
+a:link
+{
+color:green;
+font-size: 250%;
+}
+</style>
+<style>
+hr{
+	background-color: black;
+	border-top: 2px dotted #8c8b8b;
+}</style>
     
-  <body>
+  <body background="https://images7.alphacoders.com/443/443234.jpg">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
 
-          <h2><a class="navbar-brand" href="/">Start-Out</a></h2>
+         <center><h2><a class="navbar-brand" href="/"><img src ="http://s31.postimg.org/xiquz967v/logo6.jpg"height="200" width="250"></img></a></h2><center>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <div class="nav navbar-nav navbar-left">
+        <span class="nav navbar-nav navbar-left">
           {% if user.is_authenticated %}
-          <a href="/allocator/api">API</a>
-          <div>{{user}}</div>
-          <div><a href="/allocator/logout/">Logout</a></div>
+          <center>
+          <a href="/allocator/api" style = "font-size:150%;">HOME!</a>
+          <a style = "font-size:150%;" >{{user}}</a>
+          <a href="/allocator/logout/" style = "font-size:150%;">Logout</a>
+          </center>
           {% endif %}
-        </div
-        <div class="nav navbar-nav navbar-right">
+        </span>
+        <span class="nav navbar-nav navbar-right">
           {% if not user.is_authenticated %}
             <li class="active"><a href="/allocator/register">Register <span class="sr-only">(current)</span></a></li>
             
             <li><a href="/allocator/login">Login</a></li>
           {% endif %}
             
-        </div>        
+        </span>        
           
           </li>
          </ul>
