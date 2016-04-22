@@ -83,6 +83,36 @@ def api_examples(request):
 #views for manager
 def viewall(request):
     try:
+      rem = request.POST.get('removep')
+    except:
+      rem = ""
+    if rem == "clicked":
+      pid = int(request.POST.get('pid'))
+      rid = request.POST.get('rid')
+      pros = Project.objects.filter(project_id = pid)
+      pro= pros[0]        
+      s = pro.project_participants
+      if s.count(',') == 0:
+        s = "0"
+      else :
+        s = [int(i) for i in s.split(',')]
+        s.remove(int(rid))
+        s = ','.join([str(i) for i in s])
+      pro.project_participants  = s
+      pro.save()
+
+    try:
+      leave = request.POST.get('leave')
+    except:
+      leave = ""
+    if leave == "clicked":
+      pid = int(request.POST.get('pid'))
+      uid = int(request.POST.get('uid')) 
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      if pro.project_owner != uid:
+        pro.project_manager = pro.project_owner                 
+    try:
       status = request.POST.get('status')
     except:
       status = ""
@@ -151,14 +181,24 @@ def viewall(request):
           users = User.objects.filter(id = idno)
           u = users[0]
           temp.append((idno, u.username))
-        con.append((p,temp))            
-    context={'list' : con}   
+        con.append((p,temp))    
+
+    projects = Project.objects.filter(project_manager = uid)
+    con2 = []    
+    for p in projects:
+      temp2 = []
+      a = p.project_participants.split(',')
+      a = [int(i) for i in a]
+      if a[0] == 0:
+        con.append((p,0))
+      else :
+        for idno in a:
+          users = User.objects.filter(id = idno)
+          u = users[0]
+          temp2.append((idno, u.username))
+        con2.append((p,temp2))            
+    context={'list' : con,'list2' : con2}   
     return render(request, 'allocator/viewall.html', context)
-
-
-
-
-
 
 def deleted(request):
     pname = 0
