@@ -11,20 +11,14 @@
   			<form method = "POST" action = "/allocator/editproject/">
   				{% csrf_token %}
 	    		<table>
-	    		<tr><td>Project Name</td><td><input type="text" name="projectname" value={{ project_obj.project_name}} required></td></tr>
-	    		
-	    		<tr><td>Project Logo</td><td><input type="text" name="project_logo" value={{ project_obj.project_logo}} required></td></tr>
-
-	    		<tr><td>Description</td><td><input type="text" name="description" value ={{ project_obj.description}} required></td></tr>
-	    		
-	    		<tr><td>Category</td><td><input type="text" name="category" value ={{ project_obj.category}} required></td></tr>
-	    		
-	    		<tr><td>Skill Requirements</td><td><input type="text" name="skills_reqd" value = {{ project_obj.skills_reqd}} required></td>
+	    		<tr><td>Project Name</td><td><input type="text" name="projectname" value="" required></td></tr>
+	    		<tr><td>Project Logo</td><td><input type="text" name="project_logo" value=""required></td></tr>
+	    		<tr><td>Description</td><td><input type="text" name="description" value = ""required></td></tr>
+	    		<tr><td>Category</td><td><input type="text" name="category" value = ""required></td></tr>
+	    		<tr><td>Skill Requirements</td><td><input type="text" name="skills_reqd" value = ""required></td>
 	    		</tr>
-	    		
-	    		<tr><td>Educational Requirements</td><td><input type="text" name="edu_background_reqd" value = {{ project_obj.edu_background_reqd }} required></td></tr>
-	    		
-	    		<tr><td>Payment</td><td><input type="text" name="payment" value = {{ project_obj.payment}} required></td></tr>
+	    		<tr><td>Educational Requirements</td><td><input type="text" name="edu_background_reqd" value = ""required></td></tr>
+	    		<tr><td>Payment</td><td><input type="text" name="payment" value = ""required></td></tr>
 	    		<tr><td><input type="submit" value = "Edit"></td></tr>
 	    		<table>
 	    		<input type='hidden' name="project_id" value = {{project_id}} >

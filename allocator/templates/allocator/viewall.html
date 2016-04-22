@@ -1,32 +1,94 @@
 <!DOCTYPE html>
-
+<!--view delete accept requests -->
 <html>
     {% include 'allocator/base.html' %}
 
     <body>
 	<div>
 		{% if user.is_authenticated %}
-			{% if list %}
+			<h2>Manage projects</h2>
+             {% if list %}
 			<h3>Search results</h3>
 			<ul>
 				{% for p in list %}
-                 {%if p.project_owner == user.id %}
-				    <li>{{p.project_name}}</li>
-                    {{p.requests}}
+                 
+				    <li>{{p.0.project_name}}</li>
+                       
+                      {% if p.1 != 0%}
+                            {% for q in p.1 %}
+                                 {{q.1}}  sent you participation request 
+                                 <form method = "POST" action = "/allocator/viewall/">
+                	             {% csrf_token %}
+								<input type="radio" name = "rad" value = "approve">approve request</input>
+                                <input type="radio" name = "rad" value = "decline">decline request</input>
+								<input type="hidden" name = "xuid" value = {{q.0}}>
+                                <input type="hidden" name = "pid" value = {{p.0.project_id}}>
+                                <input type= "hidden" name = "uid" value= {{user.id}}>
+                                <input type="submit" value = "submit">
+								</form>                         
+                            {% endfor %}                    
+                       {% endif %}  
+		               <form method="POST" action="/allocator/viewall/">
+                         {% csrf_token %}
+								<select name="status">
+				                {% if p.0.status == "working" %}
+									<option value="working">working</option>
+									<option value="not working">not working</option>
+				                {% else %}
+						            <option value="not working">not working</option>
+									<option value="working">working</option>
+						            {% endif %}
+								  </select>
+                        <input type="hidden" name = "pid" value = {{p.0.project_id}}>
+                        <input type= "hidden" name = "uid" value= {{user.id}}>
+					    <input type="submit" value="Change Status"/>
+					    </form>   
+                                              
+                    <form method = "POST" action = "/allocator/viewall/">
+                	{% csrf_token %}
+                	<input type="submit" value = "Quit manager Job">
+                    <input type="hidden" name = "pid" value = {{p.0.project_id}}>
+                    <input type= "hidden" name = "uid" value= {{user.id}}>
+                     <input type= "hidden" name = "leave" value= "clicked" >
+	            	</form>
+
                 	<form method = "POST" action = "/allocator/deleted/">
                 	{% csrf_token %}
                 	<input type="submit" value = "Delete Project">
-	  		    	<input type="hidden" name = "del" value = {{p.project_name}}>
+	  		    	<input type="hidden" name = "del" value = {{p.0.project_name}}>
 	            	</form>
-                  {% endif %}
+                  
 				{% endfor %}
 			</ul>	 
 			{% else %}
 			<h3>No projects to display</h3>
             {% endif %}
-		{% else %}
-			<h2> Please register/login! </h2>
-        {% endif %}
+        
+        {% if list2 %}
+          {% for p in list2 %}
+               <h3>{{p.0.project_name}}</h3>
+                  {% if p.1 != 0 %}
+                         {% for q in p.1 %}
+                               {{q.1}}   
+                                 <form method = "POST" action = "/allocator/viewall/">
+                	             {% csrf_token %}								
+                                <input type = "hidden" name = "removep" value ="clicked">
+								<input type="hidden" name = "rid" value = {{q.0}}>
+                                <input type="hidden" name = "pid" value = {{p.0.project_id}}>
+                                <input type= "hidden" name = "uid" value= {{user.id}}>
+                                <input type="submit" value = "remove participant">
+								</form>                         
+                         {% endfor %}
+                  {% else %}
+                        <p> No participants </p>                                           
+                 {% endif %}
+            {% endfor %}
+           {% else %}
+           <p> No projects with participants </p>
+         {% endif %}
+   {% else %}
+	<h2> Please register/login! </h2>
+    {% endif %}
 	</div>
 
     </body>

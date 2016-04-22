@@ -33,20 +33,25 @@ $(document).ready(function(){
 	  <a href="/allocator/editproject/"><h3>Edit Projects</h3></a>
 	</div>
          <div>
-	  <a href="/allocator/viewall/"><h3>View,delete and process requests</h3></a>
+       
+	  
+      <form method = "POST" action = "/allocator/viewall/">
+	  	{% csrf_token %}
+	    <input type="hidden" name="uid" value = {{user.id}}>
+       	<input type="submit" value = "Manage Projects">
+	  </form>
+
 	</div>
    
     <div>
-	  <h3>View recommended projects</h3>
+	 
       <form method = "GET" action = "/allocator/recommended/">
 	  	{% csrf_token %}
 	    <input type="hidden" name="uid" value = {{user.id}}>
-       	<input type="submit" value = "view">
+       	<input type="submit" value = "View Recommended Projects">
 	  </form>
 	</div>
 
-	<div>
-	</div>
 	<div class="row text-center">
         <div class="col-sm-4"><a href="http://localhost:8000/allocator/google/" style="color: #fff"><div style="background-color: #d95234" class="panel panel-default"><div class="panel-body"><img src="http://upcity.com/blog/wp-content/uploads/2013/11/Google-Plus-Logo-650x318.png" height="50">View your Profile</div></div></a></div>
   	</div>

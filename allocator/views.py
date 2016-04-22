@@ -31,8 +31,7 @@ from allocator.forms import UserForm
 
 app_name='allocator'
 
-#profile_track = None
-profile_track = 'google'
+profile_track = None
 
 getGoogle = GooglePlus(settings.GOOGLE_PLUS_APP_ID, settings.GOOGLE_PLUS_APP_SECRET)
 
@@ -59,6 +58,7 @@ def index(request):
     
     if not request.user.is_active:
         if request.GET.items():
+
             if profile_track == 'google':
                 code = request.GET['code']
                 state = request.GET['state']
@@ -109,11 +109,124 @@ def api_examples(request):
     context = {'title': 14}
     return render(request, 'allocator/api_examples.html', context)
 
-#views for deletion
+#views for manager
 def viewall(request):
-    print User.objects.all()
-    projects = Project.objects.all()
-    context={'list' : projects}   
+    try:
+      rem = request.POST.get('removep')
+    except:
+      rem = ""
+    if rem == "clicked":
+      pid = int(request.POST.get('pid'))
+      rid = request.POST.get('rid')
+      pros = Project.objects.filter(project_id = pid)
+      pro= pros[0]        
+      s = pro.project_participants
+      if s.count(',') == 0:
+        s = "0"
+      else :
+        s = [int(i) for i in s.split(',')]
+        s.remove(int(rid))
+        s = ','.join([str(i) for i in s])
+      pro.project_participants  = s
+      pro.save()
+
+    try:
+      leave = request.POST.get('leave')
+    except:
+      leave = ""
+    if leave == "clicked":
+      pid = int(request.POST.get('pid'))
+      uid = int(request.POST.get('uid')) 
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      if pro.project_owner != uid:
+        pro.project_manager = pro.project_owner                 
+    try:
+      status = request.POST.get('status')
+    except:
+      status = ""
+    if status == "working":
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      pro.status = "working"
+      pro.save()
+    if status == "not working":
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      pro.status = "not working"
+      pro.save()
+    try:
+      rad = request.POST.get('rad')
+    except:
+      rad = ""
+    if rad == "approve":
+      xuid = request.POST.get('xuid')
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      s = pro.project_participants
+      if s == "0":
+        s = xuid
+      else :
+        s = s + ',' + xuid
+      pro.project_participants = s
+      s = pro.requests
+      if s.count(',') == 0:
+        s = "0"
+      else :
+        s = [int(i) for i in s.split(',')]
+        s.remove(int(xuid))
+        s = ','.join([str(i) for i in s])
+      pro.requests  = s
+      pro.save()
+    elif rad == "decline":
+      xuid = request.POST.get('xuid')
+      pid = int(request.POST.get('pid'))
+      pros=Project.objects.filter(project_id = pid)
+      pro= pros[0]
+      s = pro.requests
+      if s.count(',') == 0:
+        s = "0"
+      else :
+        s = [int(i) for i in s.split(',')]
+        s.remove(int(xuid))
+        s = ','.join([str(i) for i in s])
+      pro.requests  = s
+      pro.save()
+      
+    uid = int(request.POST.get('uid')) 
+    projects = Project.objects.filter(project_manager = uid)
+    con = []    
+    for p in projects:
+      temp = []
+      a = p.requests.split(',')
+      a = [int(i) for i in a]
+      if a[0] == 0:
+        con.append((p,0))
+      else :
+        for idno in a:
+          users = User.objects.filter(id = idno)
+          u = users[0]
+          temp.append((idno, u.username))
+        con.append((p,temp))    
+
+    projects = Project.objects.filter(project_manager = uid)
+    con2 = []    
+    for p in projects:
+      temp2 = []
+      a = p.project_participants.split(',')
+      a = [int(i) for i in a]
+      if a[0] == 0:
+        con.append((p,0))
+      else :
+        for idno in a:
+          users = User.objects.filter(id = idno)
+          u = users[0]
+          temp2.append((idno, u.username))
+        con2.append((p,temp2))            
+    context={'list' : con,'list2' : con2}   
     return render(request, 'allocator/viewall.html', context)
 
 def deleted(request):
@@ -146,8 +259,8 @@ def register(request):
             u.skills= request.POST.get('skills')
             u.edu_background= request.POST.get('edu_background')
             u.interests=request.POST.get('interests')
-            pro_pic = request.POST.get('pro_pic_location')
-            print pro_pic
+
+            u.profile_pic_loc= request.POST.get('pro_pic_location')
             u.save()
             return HttpResponseRedirect('/allocator/login/')
         else:
@@ -261,6 +374,21 @@ def created(request):
     return render(request, 'allocator/created.html', {})
 
 def recommended(request):
+    try:
+      pid = request.GET['pid']
+    except:
+      pid = ""
+    if pid != "":
+        uid = int(request.GET['uid'])
+        pid = int(request.GET['pid'])
+        
+        projects = Project.objects.filter(project_id = pid)
+        pro = projects[0]
+        if pro.requests == "0":
+           pro.requests = str(uid)
+        else :
+           pro.requests = pro.requests + ',' + str(uid)
+        pro.save()
     if request.method == 'GET':
         uid = int(request.GET['uid'])
     users = UserDetail.objects.all()
@@ -272,6 +400,7 @@ def recommended(request):
     projects = Project.objects.all()
     con = []
     for p in projects:
+     if p.project_owner != uid :
        a2 = p.skills_reqd.split(",")
        l= list(set(a1).intersection(set(a2)))
        a = p.requests.split(',')
@@ -285,6 +414,7 @@ def recommended(request):
     return render(request, 'allocator/recommended.html',context)
 
 def sendreq(request):
+     
      if request.method == 'GET':
         uid = int(request.GET['uid'])
         pid = int(request.GET['pid'])
