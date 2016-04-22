@@ -204,14 +204,16 @@ def viewall(request):
       a = p.requests.split(',')
       a = [int(i) for i in a]
       if a[0] == 0:
+        assert(p.requests == "0", "p.requests is not 0 ")
         con.append((p,0))
+# if project has no requests add ( <project_object>, 0 ) to the con list
       else :
         for idno in a:
           users = User.objects.filter(id = idno)
           u = users[0]
           temp.append((idno, u.username))
         con.append((p,temp))    
-
+# if project has participants add ( <project_object>, [ ( <idno>, <username> ) ... ] )
     projects = Project.objects.filter(project_manager = uid)
     con2 = []    
     for p in projects:
@@ -219,15 +221,17 @@ def viewall(request):
       a = p.project_participants.split(',')
       a = [int(i) for i in a]
       if a[0] == 0:
-        con.append((p,0))
+        con2.append((p,0))
       else :
         for idno in a:
           users = User.objects.filter(id = idno)
           u = users[0]
           temp2.append((idno, u.username))
-        con2.append((p,temp2))            
+        con2.append((p,temp2)) 
+           
     context={'list' : con,'list2' : con2}   
     return render(request, 'allocator/viewall.html', context)
+
 
 def deleted(request):
     pname = 0

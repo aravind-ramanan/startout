@@ -9,9 +9,9 @@
 			<h2>Manage projects</h2>
              {% if list %}
 			<h3>Search results</h3>
-			<ul>
+			<ul> 
 				{% for p in list %}
-                 
+
 				    <li>{{p.0.project_name}}</li>
                        
                       {% if p.1 != 0%}
@@ -27,7 +27,8 @@
                                 <input type="submit" value = "submit">
 								</form>                         
                             {% endfor %}                    
-                       {% endif %}  
+                       {% endif %}
+                        
 		               <form method="POST" action="/allocator/viewall/">
                          {% csrf_token %}
 								<select name="status">
